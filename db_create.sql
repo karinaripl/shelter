@@ -267,96 +267,17 @@ CREATE TABLE procedure_consumption_rate (
 );
 
 -- =====================================================
--- 5. Триггер для проверки остатков при расходе товара
+-- 5. Триггеры
+-- Остатки на складе уменьшает/восстанавливает C# код (WarehouseService).
+-- В БД оставлены только проверочные триггеры из db_views_and_triggers.sql:
+--   trg_expense_remains_check — проверяет остаток курсором перед записью расхода
+--   trg_check_batch_expiry   — проверяет срок годности перед записью расхода
+--   trg_cat_event_date       — запрещает добавление кошки в мероприятие не в день события
+--   trg_cat_departure        — убирает кошку из будущих мероприятий при выбытии
+--   trg_event_date_change    — убирает выбывших кошек при переносе мероприятия
+-- Все пять триггеров находятся в файлах db_views_and_triggers.sql
+-- и trigger_cat_event.sql — выполни их после этого скрипта.
 -- =====================================================
-
-CREATE OR REPLACE FUNCTION check_stock_before_expense()
-RETURNS TRIGGER AS $$
-DECLARE
-    current_stock INTEGER;
-BEGIN
-    SELECT COALESCE(SUM(quantity), 0) INTO current_stock
-    FROM warehouse_remains
-    WHERE batch_id = NEW.batch_id;
-
-    IF current_stock < NEW.quantity THEN
-        RAISE EXCEPTION 'Недостаточно товара на складе. Доступно: %, запрошено: %', current_stock, NEW.quantity;
-    END IF;
-
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER trg_check_stock_before_expense
-BEFORE INSERT ON product_expense
-FOR EACH ROW
-EXECUTE FUNCTION check_stock_before_expense();
-
--- =====================================================
--- 6. Триггер для уменьшения остатков при расходе
--- =====================================================
-
-CREATE OR REPLACE FUNCTION reduce_stock_on_expense()
-RETURNS TRIGGER AS $$
-BEGIN
-    UPDATE warehouse_remains
-    SET quantity = quantity - NEW.quantity
-    WHERE batch_id = NEW.batch_id;
-
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER trg_reduce_stock_on_expense
-AFTER INSERT ON product_expense
-FOR EACH ROW
-EXECUTE FUNCTION reduce_stock_on_expense();
-
--- =====================================================
--- 7. Триггер для проверки срока годности (через партию)
--- =====================================================
-
-CREATE OR REPLACE FUNCTION check_batch_expiry()
-RETURNS TRIGGER AS $$
-DECLARE
-    batch_expiry DATE;
-BEGIN
-    SELECT expiration_date INTO batch_expiry
-    FROM product_batch
-    WHERE batch_id = NEW.batch_id;
-
-    IF batch_expiry IS NOT NULL AND batch_expiry < CURRENT_DATE THEN
-        RAISE EXCEPTION 'Партия товара с ID % просрочена!', NEW.batch_id;
-    END IF;
-
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER trg_check_batch_expiry
-BEFORE INSERT ON product_expense
-FOR EACH ROW
-EXECUTE FUNCTION check_batch_expiry();
-
--- =====================================================
--- 8. Триггер для обновления статуса кота при выбытии
--- =====================================================
-
-CREATE OR REPLACE FUNCTION update_status_on_departure()
-RETURNS TRIGGER AS $$
-BEGIN
-    IF NEW.departure_date IS NOT NULL AND OLD.departure_date IS NULL THEN
-        UPDATE cat SET status_id = (SELECT status_id FROM cat_status WHERE name = 'пристроен')
-        WHERE cat_id = NEW.cat_id;
-    END IF;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER trg_update_status_on_departure
-BEFORE UPDATE OF departure_date ON cat
-FOR EACH ROW
-EXECUTE FUNCTION update_status_on_departure();
 
 -- =====================================================
 -- 9. Начальные данные (статусы)
