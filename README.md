@@ -26,9 +26,11 @@
 Ключевые таблицы: `cat`, `cat_status`, `cage`, `medical_record`, `procedure_type`, `procedure_record`, `volunteer`, `volunteer_care`, `product`, `product_batch`, `warehouse`, `warehouse_remains`, `product_expense`, `employee`, `event`, `event_participation`, `account`, `salary_payment`, `monetary_donation`.
 
 SQL-скрипты в корне проекта:
+- `db_create.sql` — полный скрипт создания БД: таблицы, ограничения, начальные данные
 - `db_views_and_triggers.sql` — представления и триггеры с курсорами (выполнить при первой настройке)
 - `trigger_cat_event.sql` — триггер проверки даты при добавлении кошки в мероприятие
 - `donation_relations.sql` — связи пожертвований
+- `db_examples.sql` — примеры пользовательских типов, CHECK, DEFAULT, триггеров и представлений
 
 ## Быстрый старт
 
@@ -75,7 +77,8 @@ dotnet run --launch-profile https
 |---|---|
 | `trg_cat_departure` | При выбытии кошки — убирает её из будущих мероприятий |
 | `trg_event_date_change` | При изменении даты мероприятия — убирает уже выбывших кошек |
-| `trg_expense_remains_check` | Запрещает расход больше остатка на складе |
+| `trg_expense_remains_check` | Запрещает расход больше остатка на складе (курсор по складам) |
+| `trg_check_batch_expiry` | Запрещает расход просроченной партии |
 | `trg_cat_event_date` | Кошек можно добавлять в мероприятие только в день его проведения |
 
 ## Бизнес-правила
