@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <circle cx="100" cy="100" r="100" fill="#DB2777"/>
+  <ellipse cx="100" cy="198" rx="62" ry="38" fill="#9D174D"/>
+  <rect x="89" y="148" width="22" height="22" rx="11" fill="#C68642"/>
+  <ellipse cx="100" cy="110" rx="38" ry="43" fill="#C68642"/>
+  <!-- Long black hair -->
+  <ellipse cx="100" cy="80" rx="44" ry="36" fill="#0D0806"/>
+  <rect x="58" y="85" width="14" height="65" rx="7" fill="#0D0806"/>
+  <rect x="128" y="85" width="14" height="65" rx="7" fill="#0D0806"/>
+  <!-- Highlight on hair -->
+  <path d="M85 70 Q100 62 115 70" stroke="#2A1A0E" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- Eyes -->
+  <ellipse cx="86" cy="108" rx="5" ry="5.5" fill="white"/>
+  <circle cx="87" cy="108" r="3" fill="#1A0A00"/>
+  <ellipse cx="114" cy="108" rx="5" ry="5.5" fill="white"/>
+  <circle cx="115" cy="108" r="3" fill="#1A0A00"/>
+  <!-- Eyelashes -->
+  <path d="M81 103 Q87 100 93 103" stroke="#0D0806" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  <path d="M107 103 Q113 100 119 103" stroke="#0D0806" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  <path d="M80 100 Q87 97 94 100" stroke="#0D0806" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M106 100 Q113 97 120 100" stroke="#0D0806" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M97 121 Q100 125 103 121" stroke="#A07050" stroke-width="1.5" fill="none"/>
+  <path d="M89 133 Q100 142 111 133" stroke="#9B3060" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <!-- Necklace -->
+  <circle cx="100" cy="150" r="4" fill="#F59E0B"/>
+</svg>

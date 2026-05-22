@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <circle cx="100" cy="100" r="100" fill="#0D9488"/>
+  <ellipse cx="100" cy="198" rx="65" ry="40" fill="#0F766E"/>
+  <rect x="89" y="148" width="22" height="22" rx="11" fill="#F4C8A0"/>
+  <ellipse cx="100" cy="112" rx="38" ry="42" fill="#F4C8A0"/>
+  <ellipse cx="62" cy="112" rx="6" ry="8" fill="#F4C8A0"/>
+  <ellipse cx="138" cy="112" rx="6" ry="8" fill="#F4C8A0"/>
+  <!-- Short dark hair -->
+  <ellipse cx="100" cy="78" rx="40" ry="28" fill="#2D1B0E"/>
+  <!-- Beard -->
+  <ellipse cx="100" cy="138" rx="30" ry="12" fill="#2D1B0E"/>
+  <rect x="72" y="128" width="56" height="14" fill="#2D1B0E"/>
+  <!-- Eyes behind glasses -->
+  <ellipse cx="86" cy="108" rx="5" ry="5.5" fill="white"/>
+  <circle cx="87" cy="108" r="3" fill="#1A0A00"/>
+  <ellipse cx="114" cy="108" rx="5" ry="5.5" fill="white"/>
+  <circle cx="115" cy="108" r="3" fill="#1A0A00"/>
+  <!-- Glasses frames -->
+  <rect x="76" y="101" width="22" height="16" rx="8" fill="none" stroke="#1A1A1A" stroke-width="2.5"/>
+  <rect x="102" y="101" width="22" height="16" rx="8" fill="none" stroke="#1A1A1A" stroke-width="2.5"/>
+  <line x1="98" y1="109" x2="102" y2="109" stroke="#1A1A1A" stroke-width="2"/>
+  <line x1="76" y1="109" x2="70" y2="107" stroke="#1A1A1A" stroke-width="2"/>
+  <line x1="124" y1="109" x2="130" y2="107" stroke="#1A1A1A" stroke-width="2"/>
+  <path d="M80 99 Q87 96 94 99" stroke="#2D1B0E" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M106 99 Q113 96 120 99" stroke="#2D1B0E" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M91 134 Q100 138 109 134" stroke="#8B5A3A" stroke-width="2" fill="none" stroke-linecap="round"/>
+</svg>

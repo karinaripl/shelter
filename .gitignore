@@ -1,0 +1,42 @@
+# Build output
+bin/
+obj/
+
+# User settings
+*.user
+*.suo
+.vs/
+
+# Rider / IntelliJ
+.idea/
+
+# VS Code
+.vscode/
+
+# Runtime & logs
+*.log
+*.tmp
+
+# Secrets — никогда не коммить!
+appsettings.Development.json
+appsettings.Local.json
+*.pfx
+*.p12
+
+# NuGet
+*.nupkg
+packages/
+project.lock.json
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE / AI tools
+.claude/
+.idea/
+*.user
+
+# Test data SQL (локальные скрипты)
+test_expiring_batches.sql

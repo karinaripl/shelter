@@ -1,0 +1,555 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель - Приют для животных</title>
+    <link rel="stylesheet" href="/css/admin.css?v=10">
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>Панель администратора <span class="admin-badge">Admin</span></h1>
+            <div class="user-info">
+                <span class="user-name" id="adminUserName">Администратор</span>
+                <button class="switch-mode-btn" id="switchToEmployeeBtn">👥 Перейти в панель сотрудника</button>
+                <div class="avatar" id="adminAvatar">А</div>
+                <button class="logout-btn" id="logoutBtn">🚪 Выйти</button>
+            </div>
+        </div>
+
+        <div class="admin-main">
+            <div class="employees-panel">
+                <div class="panel-header">
+                    <h2>👥 Сотрудники</h2>
+                    <button class="btn-add" id="addEmployeeBtn">+ Добавить</button>
+                </div>
+                <input type="text" class="search-input" id="employeeSearch" placeholder="🔍 Поиск по фамилии или должности...">
+                <div class="table-wrapper">
+                    <table class="employees-table">
+                        <thead>
+                            <tr><th>Аватар</th><th>ФИО</th><th>Должность</th><th>Телефон</th><th>Email</th><th>Дата приёма</th><th>Статус</th><th>Действия</th></tr>
+                        </thead>
+                        <tbody id="employeesTableBody"><tr><td colspan="8" class="loading-text">Загрузка...</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="stats-panel">
+                <div class="panel-header">
+                    <h2>📊 Статистика приюта</h2>
+                    <button class="btn-refresh" id="refreshStatsBtn">🔄 Обновить</button>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="statCatsInShelter">0</div>
+                        <div class="stat-label">Котов в приюте</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statFreeCages">0</div>
+                        <div class="stat-label">Свободных клеток</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statFoodConsumption">0</div>
+                        <div class="stat-label">Расход корма / мес (кг)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statMonthlyIncome">0 ₽</div>
+                        <div class="stat-label">Поступлений</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statWeeklyProcedures">0</div>
+                        <div class="stat-label">Процедур за неделю</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statActiveVolunteers">0</div>
+                        <div class="stat-label">Активных волонтёров</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="activeEmployeesStat">0</div>
+                        <div class="stat-label">Работающих сотрудников</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="firedEmployeesStat">0</div>
+                        <div class="stat-label">Уволенных сотрудников</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== ФИНАНСЫ ===== -->
+    <div class="finance-section">
+        <div class="finance-header">
+            <h2>💰 Финансы</h2>
+        </div>
+        <div class="finance-summary">
+            <div class="fin-card fin-card-green">
+                <div class="fin-card-val" id="finIncome">0 ₽</div>
+                <div class="fin-card-lbl">Всего пожертвований</div>
+            </div>
+            <div class="fin-card fin-card-red">
+                <div class="fin-card-val" id="finSalaries">0 ₽</div>
+                <div class="fin-card-lbl">Выплачено зарплат</div>
+            </div>
+            <div class="fin-card fin-card-orange">
+                <div class="fin-card-val" id="finSupply">0 ₽</div>
+                <div class="fin-card-lbl">Расходы на закупки</div>
+            </div>
+            <div class="fin-card fin-card-cyan">
+                <div class="fin-card-val" id="finBalance">0 ₽</div>
+                <div class="fin-card-lbl">Баланс</div>
+            </div>
+            <div class="fin-card fin-card-purple">
+                <div class="fin-card-val" id="finBenefactors">0</div>
+                <div class="fin-card-lbl">Жертвователей</div>
+            </div>
+        </div>
+
+        <div class="finance-panel">
+            <div class="finance-tabs">
+                <button class="fin-tab-btn active" data-fin="fin-donations">📥 Пожертвования</button>
+                <button class="fin-tab-btn" data-fin="fin-salaries">💸 Зарплаты</button>
+                <button class="fin-tab-btn" data-fin="fin-supply">📦 Закупки</button>
+                <button class="fin-tab-btn" data-fin="fin-benefactors">👥 Жертвователи</button>
+                <div style="margin-left:auto;display:flex;gap:8px">
+                    <button class="btn-add fin-add-btn" id="addDonationBtn">+ Добавить пожертвование</button>
+                    <button class="btn-pay-sal fin-pay-btn" id="paySalBtn" style="display:none">💸 Начислить зарплату</button>
+                </div>
+            </div>
+
+            <!-- ПОЖЕРТВОВАНИЯ -->
+            <div id="fin-donations" class="fin-tab-content active">
+                <input type="text" class="search-input" id="donationSearch" placeholder="🔍 Поиск по жертвователю или типу..." style="margin-bottom:16px">
+                <div class="table-wrapper">
+                    <table class="employees-table">
+                        <thead><tr>
+                            <th>Дата</th><th>Жертвователь</th><th>Тип</th><th>Сумма / Товары</th><th></th>
+                        </tr></thead>
+                        <tbody id="donationsBody"><tr><td colspan="5" class="loading-text">Загрузка...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ЗАРПЛАТЫ -->
+            <div id="fin-salaries" class="fin-tab-content">
+                <div class="sal-filter-row">
+                    <label class="sal-filter-label">Период:</label>
+                    <select id="salMonthSel" class="sal-sel"></select>
+                    <select id="salYearSel" class="sal-sel"></select>
+                    <button class="btn-refresh" id="salFilterBtn">Показать</button>
+                </div>
+                <div class="table-wrapper">
+                    <table class="employees-table">
+                        <thead><tr>
+                            <th>Дата</th><th>Сотрудник</th><th>Должность</th><th>Сумма</th>
+                        </tr></thead>
+                        <tbody id="salariesBody"><tr><td colspan="4" class="loading-text">Загрузка...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ЗАКУПКИ -->
+            <div id="fin-supply" class="fin-tab-content">
+                <div class="table-wrapper">
+                    <table class="employees-table">
+                        <thead><tr>
+                            <th>Дата</th><th>Товар / Описание</th><th>Сумма</th>
+                        </tr></thead>
+                        <tbody id="supplyExpBody"><tr><td colspan="3" class="loading-text">Загрузка...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ЖЕРТВОВАТЕЛИ -->
+            <div id="fin-benefactors" class="fin-tab-content">
+                <div class="table-wrapper">
+                    <table class="employees-table">
+                        <thead><tr>
+                            <th>Жертвователь</th><th>Телефон</th><th>Email</th><th>Пожертвований</th><th>Итого</th>
+                        </tr></thead>
+                        <tbody id="benefactorsBody"><tr><td colspan="5" class="loading-text">Загрузка...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для сотрудников -->
+    <div id="employeeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Сотрудник</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="employeeForm" novalidate>
+                <div class="form-section">
+                    <h4>Основная информация</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Фамилия *</label>
+                            <input type="text" id="empLastName" required>
+                            <div class="error-text" id="errorLastName"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Имя *</label>
+                            <input type="text" id="empFirstName" required>
+                            <div class="error-text" id="errorFirstName"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Отчество</label>
+                            <input type="text" id="empMiddleName">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Должность *</label>
+                            <select id="empPosition" required>
+                                <option value="">-- Выберите должность --</option>
+                            </select>
+                            <div class="error-text" id="errorPosition"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Телефон</label>
+                            <input type="text" id="empPhone" placeholder="8XXXXXXXXXX или +7XXXXXXXXXX" inputmode="tel">
+                            <div class="error-text" id="errorPhone"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="text" id="empEmail" placeholder="example@mail.ru" autocomplete="email">
+                            <div class="error-text" id="errorEmail"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Адрес</label>
+                            <input type="text" id="empAddress">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h4>Паспортные данные</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Серия паспорта</label>
+                            <input type="text" id="empPassportSeries" maxlength="4" placeholder="1234" inputmode="numeric" pattern="[0-9]*">
+                            <div class="error-text" id="errorPassportSeries"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Номер паспорта</label>
+                            <input type="text" id="empPassportNumber" maxlength="6" placeholder="567890" inputmode="numeric" pattern="[0-9]*">
+                            <div class="error-text" id="errorPassportNumber"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h4>Даты</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Дата рождения</label>
+                            <input type="date" id="empBirthDate">
+                            <div class="error-text" id="errorBirthDate"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Дата приёма *</label>
+                            <input type="date" id="empHireDate" required>
+                            <div class="error-text" id="errorHireDate"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Дата увольнения</label>
+                            <input type="date" id="empTerminationDate">
+                            <div class="error-text" id="errorTerminationDate"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Рабочие часы</label>
+                            <input type="number" id="empWorkHours" value="40" min="0">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h4>Данные для входа</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Логин *</label>
+                            <input type="text" id="empLogin" required>
+                            <div class="error-text" id="errorLogin"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Пароль *</label>
+                            <input type="password" id="empPassword">
+                            <div class="error-text" id="errorPassword"></div>
+                            <small id="passwordHint" style="display:none; color:#666;">Оставьте пустым, чтобы не менять</small>
+                            <small id="passwordRequiredHint" style="color:#e74c3c;">Обязателен для нового сотрудника</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="submit" class="btn-save">Сохранить</button>
+                    <button type="button" class="btn-cancel">Отмена</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="toastMessage" class="toast hidden"></div>
+
+    <!-- ===== МОДАЛ: НАЧИСЛЕНИЕ ЗАРПЛАТ ===== -->
+    <div id="salaryModal" class="modal">
+        <div class="modal-content" style="width:620px">
+            <div class="modal-header">
+                <h3>💸 Начисление зарплат</h3>
+                <button class="modal-close" id="salaryModalClose">&times;</button>
+            </div>
+            <div style="padding:20px 24px 0">
+                <div class="sal-month-pick">
+                    <span class="sal-month-label">Месяц начисления:</span>
+                    <select id="salPayMonth" class="sal-sel"></select>
+                    <select id="salPayYear" class="sal-sel"></select>
+                    <button class="btn-refresh" id="salPreviewBtn">Рассчитать</button>
+                </div>
+                <div id="salPreviewArea" style="margin-top:18px"></div>
+            </div>
+            <div class="form-buttons" style="margin-top:0">
+                <button type="button" class="btn-save" id="salConfirmBtn" style="display:none">✅ Начислить</button>
+                <button type="button" class="btn-cancel" id="salaryModalCancel">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== МОДАЛ: ПОЖЕРТВОВАНИЕ ===== -->
+    <div id="donationModal" class="modal">
+        <div class="modal-content" style="width:560px">
+            <div class="modal-header">
+                <h3>💝 Новое пожертвование</h3>
+                <button class="modal-close" id="donationModalClose">&times;</button>
+            </div>
+            <form id="donationForm" novalidate>
+                <div class="form-section">
+                    <h4>Жертвователь</h4>
+                    <div class="form-group">
+                        <label>Выбрать существующего</label>
+                        <select id="donBenefactorSel">
+                            <option value="">— Новый жертвователь —</option>
+                        </select>
+                    </div>
+                    <div id="donNewBenefactorBlock">
+                        <div class="form-group">
+                            <label>ФИО <span style="color:var(--red)">*</span></label>
+                            <input type="text" id="donName" placeholder="Иванова Мария Петровна">
+                            <div class="error-text" id="errDonName"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Телефон</label>
+                                <input type="text" id="donPhone" placeholder="89991234567">
+                                <div class="error-text" id="errDonPhone"></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="text" id="donEmail" placeholder="mail@example.com">
+                                <div class="error-text" id="errDonEmail"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-section">
+                    <h4>Пожертвование</h4>
+                    <div class="form-row" style="margin-bottom:16px">
+                        <div class="form-group" style="margin-bottom:0">
+                            <label>Дата <span style="color:var(--red)">*</span></label>
+                            <input type="date" id="donDate">
+                            <div class="error-text" id="errDonDate"></div>
+                        </div>
+                        <div class="form-group" style="margin-bottom:0">
+                            <label>Тип пожертвования</label>
+                            <select id="donType">
+                                <option value="денежное">💵 Денежное</option>
+                                <option value="натуральное">📦 Натуральное</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Секция: денежное -->
+                    <div id="donMoneySection">
+                        <div class="form-group">
+                            <label>Сумма (₽) <span style="color:var(--red)">*</span></label>
+                            <input type="number" id="donAmount" min="0" step="0.01" placeholder="0.00">
+                            <div class="error-text" id="errDonAmount"></div>
+                        </div>
+                    </div>
+                    <!-- Секция: натуральное -->
+                    <div id="donProductsSection" style="display:none">
+                        <div class="don-prods-header">
+                            <span class="don-prods-label">Товары <span style="color:var(--red)">*</span></span>
+                            <button type="button" class="btn-add-prod-row" id="addProductRowBtn">+ Добавить товар</button>
+                        </div>
+                        <div class="error-text" id="errDonProducts"></div>
+                        <div id="donProductRows"></div>
+                    </div>
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn-save">Сохранить</button>
+                    <button type="button" class="btn-cancel" id="donationModalCancel">Отмена</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== ПРОФИЛЬ ===== -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3 id="profileModalTitle">👤 Мой профиль</h3>
+                <div style="display:flex;gap:8px;align-items:center">
+                    <button class="profile-edit-btn" id="profileEditToggleBtn" onclick="toggleProfileEdit()">✏️ Редактировать</button>
+                    <button class="modal-close" data-modal="profileModal">&times;</button>
+                </div>
+            </div>
+            <div class="profile-layout">
+                <!-- Левая колонка: аватар -->
+                <div class="profile-left">
+                    <div class="profile-avatar-preview" id="profileAvatarPreview"></div>
+                    <div class="profile-name" id="profileName">—</div>
+                    <div class="profile-position" id="profilePosition">—</div>
+                    <div class="profile-avatar-section">
+                        <div class="profile-avatar-title">Аватар</div>
+                        <div class="avatar-grid" id="avatarGrid"></div>
+                    </div>
+                </div>
+
+                <!-- Правая колонка: просмотр -->
+                <div class="profile-right" id="profileViewPanel">
+                    <div class="profile-info-grid">
+                        <div class="profile-info-item">
+                            <span class="profile-info-label">📞 Телефон</span>
+                            <span class="profile-info-value" id="profilePhone">—</span>
+                        </div>
+                        <div class="profile-info-item">
+                            <span class="profile-info-label">📧 Email</span>
+                            <span class="profile-info-value" id="profileEmail">—</span>
+                        </div>
+                        <div class="profile-info-item">
+                            <span class="profile-info-label">🎂 Дата рождения</span>
+                            <span class="profile-info-value" id="profileBirth">—</span>
+                        </div>
+                        <div class="profile-info-item">
+                            <span class="profile-info-label">📅 Дата приёма</span>
+                            <span class="profile-info-value" id="profileHire">—</span>
+                        </div>
+                        <div class="profile-info-item">
+                            <span class="profile-info-label">🏠 Адрес</span>
+                            <span class="profile-info-value" id="profileAddress">—</span>
+                        </div>
+                        <div class="profile-info-item">
+                            <span class="profile-info-label">🪪 Паспорт</span>
+                            <span class="profile-info-value" id="profilePassport">—</span>
+                        </div>
+                        <div class="profile-info-item">
+                            <span class="profile-info-label">👤 Логин</span>
+                            <span class="profile-info-value" id="profileLogin">—</span>
+                        </div>
+                        <div class="profile-info-item">
+                            <span class="profile-info-label">⏰ Часов в неделю</span>
+                            <span class="profile-info-value" id="profileHours">—</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Правая колонка: редактирование -->
+                <div class="profile-right" id="profileEditPanel" style="display:none">
+                    <form id="profileEditForm" onsubmit="saveProfileEdit(event)" novalidate>
+                        <div class="pedit-grid">
+
+                            <div class="pedit-field pedit-full">
+                                <label class="pedit-label">ФИО <span class="pedit-req">*</span></label>
+                                <input class="pedit-input" id="peditName" type="text" placeholder="Иванова Мария Петровна" autocomplete="name">
+                                <div class="pedit-hint">Фамилия Имя Отчество — каждое слово с заглавной</div>
+                                <div class="pedit-error" id="errPeditName"></div>
+                            </div>
+
+                            <div class="pedit-field">
+                                <label class="pedit-label">Телефон</label>
+                                <input class="pedit-input" id="peditPhone" type="tel" placeholder="89991234567" autocomplete="tel">
+                                <div class="pedit-hint">11 цифр: 8XXXXXXXXXX или +7XXXXXXXXXX</div>
+                                <div class="pedit-error" id="errPeditPhone"></div>
+                            </div>
+
+                            <div class="pedit-field">
+                                <label class="pedit-label">Email</label>
+                                <input class="pedit-input" id="peditEmail" type="email" placeholder="mail@example.com" autocomplete="email">
+                                <div class="pedit-hint">Формат: адрес@домен.зона</div>
+                                <div class="pedit-error" id="errPeditEmail"></div>
+                            </div>
+
+                            <div class="pedit-field pedit-full">
+                                <label class="pedit-label">Адрес</label>
+                                <input class="pedit-input" id="peditAddress" type="text" placeholder="г. Москва, ул. Пушкина, д. 1, кв. 2" autocomplete="street-address">
+                                <div class="pedit-hint">Город, улица, дом, квартира</div>
+                                <div class="pedit-error" id="errPeditAddress"></div>
+                            </div>
+
+                            <div class="pedit-field">
+                                <label class="pedit-label">Серия паспорта</label>
+                                <input class="pedit-input" id="peditPassSeries" type="text" placeholder="1234" maxlength="4" autocomplete="off">
+                                <div class="pedit-hint">Ровно 4 цифры</div>
+                                <div class="pedit-error" id="errPeditPassSeries"></div>
+                            </div>
+
+                            <div class="pedit-field">
+                                <label class="pedit-label">Номер паспорта</label>
+                                <input class="pedit-input" id="peditPassNumber" type="text" placeholder="567890" maxlength="6" autocomplete="off">
+                                <div class="pedit-hint">Ровно 6 цифр</div>
+                                <div class="pedit-error" id="errPeditPassNumber"></div>
+                            </div>
+
+                            <div class="pedit-field pedit-full">
+                                <label class="pedit-label">Логин <span class="pedit-req">*</span></label>
+                                <input class="pedit-input" id="peditLogin" type="text" placeholder="ivan_petrov" autocomplete="username">
+                                <div class="pedit-hint">Минимум 3 символа, без пробелов, только буквы/цифры/_</div>
+                                <div class="pedit-error" id="errPeditLogin"></div>
+                            </div>
+
+                            <div class="pedit-field">
+                                <label class="pedit-label">Новый пароль</label>
+                                <div class="pedit-pass-wrap">
+                                    <input class="pedit-input" id="peditPassword" type="password" placeholder="Оставьте пустым чтобы не менять" autocomplete="new-password">
+                                    <button type="button" class="pedit-eye" onclick="togglePassVis('peditPassword', this)">👁</button>
+                                </div>
+                                <div class="pedit-hint">Минимум 6 символов</div>
+                                <div class="pedit-error" id="errPeditPassword"></div>
+                            </div>
+
+                            <div class="pedit-field">
+                                <label class="pedit-label">Подтвердить пароль</label>
+                                <div class="pedit-pass-wrap">
+                                    <input class="pedit-input" id="peditPasswordConfirm" type="password" placeholder="Повторите новый пароль" autocomplete="new-password">
+                                    <button type="button" class="pedit-eye" onclick="togglePassVis('peditPasswordConfirm', this)">👁</button>
+                                </div>
+                                <div class="pedit-hint">Должен совпасть с новым паролем</div>
+                                <div class="pedit-error" id="errPeditPasswordConfirm"></div>
+                            </div>
+
+                        </div>
+                        <div class="pedit-actions">
+                            <button type="submit" class="btn-save-profile">💾 Сохранить</button>
+                            <button type="button" class="btn-cancel-profile" onclick="toggleProfileEdit()">Отмена</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/common.js?v=17"></script>
+    <script src="/js/profile.js?v=1"></script>
+    <script src="/js/admin.js?v=12"></script>
+</body>
+</html>

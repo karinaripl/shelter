@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <circle cx="100" cy="100" r="100" fill="#8B5CF6"/>
+  <ellipse cx="100" cy="198" rx="62" ry="38" fill="#6D28D9"/>
+  <rect x="89" y="148" width="22" height="22" rx="11" fill="#FFE4D0"/>
+  <ellipse cx="100" cy="110" rx="38" ry="43" fill="#FFE4D0"/>
+  <!-- Curly blonde hair -->
+  <ellipse cx="100" cy="75" rx="46" ry="34" fill="#E8C94A"/>
+  <ellipse cx="60" cy="100" rx="14" ry="22" fill="#E8C94A"/>
+  <ellipse cx="140" cy="100" rx="14" ry="22" fill="#E8C94A"/>
+  <ellipse cx="68" cy="82" rx="11" ry="14" fill="#D4B030"/>
+  <ellipse cx="132" cy="82" rx="11" ry="14" fill="#D4B030"/>
+  <ellipse cx="78" cy="68" rx="10" ry="12" fill="#E8C94A"/>
+  <ellipse cx="122" cy="68" rx="10" ry="12" fill="#E8C94A"/>
+  <!-- Eyes -->
+  <ellipse cx="86" cy="108" rx="5" ry="5.5" fill="white"/>
+  <circle cx="87" cy="108" r="3" fill="#3B2A1A"/>
+  <ellipse cx="114" cy="108" rx="5" ry="5.5" fill="white"/>
+  <circle cx="115" cy="108" r="3" fill="#3B2A1A"/>
+  <!-- Lashes -->
+  <path d="M81 103 Q87 100 93 103" stroke="#3B2A1A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M107 103 Q113 100 119 103" stroke="#3B2A1A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M97 121 Q100 125 103 121" stroke="#C08878" stroke-width="1.5" fill="none"/>
+  <path d="M89 133 Q100 142 111 133" stroke="#B04060" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <!-- Earrings -->
+  <circle cx="62" cy="118" r="4" fill="#F59E0B"/>
+  <circle cx="138" cy="118" r="4" fill="#F59E0B"/>
+</svg>

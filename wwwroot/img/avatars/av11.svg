@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <circle cx="100" cy="100" r="100" fill="#06B6D4"/>
+  <ellipse cx="100" cy="198" rx="62" ry="38" fill="#0E7490"/>
+  <rect x="89" y="148" width="22" height="22" rx="11" fill="#FFE4D0"/>
+  <ellipse cx="100" cy="110" rx="38" ry="43" fill="#FFE4D0"/>
+  <!-- Bun top -->
+  <circle cx="100" cy="62" r="22" fill="#8B4513"/>
+  <ellipse cx="100" cy="78" rx="38" ry="24" fill="#8B4513"/>
+  <!-- Bun wrap detail -->
+  <circle cx="100" cy="62" r="15" fill="#6B3410"/>
+  <circle cx="100" cy="62" r="8" fill="#8B4513"/>
+  <!-- Hair sides pulled back -->
+  <path d="M63 90 Q64 75 75 72" stroke="#8B4513" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <path d="M137 90 Q136 75 125 72" stroke="#8B4513" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <!-- Eyes -->
+  <ellipse cx="86" cy="110" rx="5" ry="5.5" fill="white"/>
+  <circle cx="87" cy="110" r="3" fill="#3A2A1A"/>
+  <ellipse cx="114" cy="110" rx="5" ry="5.5" fill="white"/>
+  <circle cx="115" cy="110" r="3" fill="#3A2A1A"/>
+  <!-- Eyelashes -->
+  <path d="M81 104 Q87 101 93 104" stroke="#3A2A1A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M107 104 Q113 101 119 104" stroke="#3A2A1A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M81 101 Q87 98 93 101" stroke="#6B3410" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  <path d="M107 101 Q113 98 119 101" stroke="#6B3410" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  <path d="M97 122 Q100 126 103 122" stroke="#C08878" stroke-width="1.5" fill="none"/>
+  <path d="M89 134 Q100 143 111 134" stroke="#B04060" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <!-- Pearl earrings -->
+  <circle cx="63" cy="118" r="5" fill="#F0EEE8"/>
+  <circle cx="137" cy="118" r="5" fill="#F0EEE8"/>
+</svg>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <circle cx="100" cy="100" r="100" fill="#6B9B6B"/>
+  <ellipse cx="100" cy="198" rx="65" ry="40" fill="#3D6B3D"/>
+  <rect x="89" y="148" width="22" height="22" rx="11" fill="#FFE0C8"/>
+  <ellipse cx="100" cy="113" rx="38" ry="42" fill="#FFE0C8"/>
+  <ellipse cx="62" cy="113" rx="6" ry="8" fill="#FFE0C8"/>
+  <ellipse cx="138" cy="113" rx="6" ry="8" fill="#FFE0C8"/>
+  <!-- Gray hair receding -->
+  <ellipse cx="100" cy="78" rx="40" ry="24" fill="#C8C0B8"/>
+  <!-- Bald top hint -->
+  <ellipse cx="100" cy="76" rx="28" ry="16" fill="#FFE0C8"/>
+  <!-- Side hair -->
+  <ellipse cx="66" cy="90" rx="10" ry="18" fill="#C8C0B8"/>
+  <ellipse cx="134" cy="90" rx="10" ry="18" fill="#C8C0B8"/>
+  <!-- Mustache -->
+  <ellipse cx="100" cy="128" rx="18" ry="6" fill="#A8A0A0"/>
+  <!-- Wrinkles -->
+  <path d="M76 110 Q80 108 84 110" stroke="#D0B8A8" stroke-width="1" fill="none"/>
+  <path d="M116 110 Q120 108 124 110" stroke="#D0B8A8" stroke-width="1" fill="none"/>
+  <!-- Eyes -->
+  <ellipse cx="86" cy="108" rx="4.5" ry="5" fill="white"/>
+  <circle cx="87" cy="108" r="2.8" fill="#3A2A1A"/>
+  <ellipse cx="114" cy="108" rx="4.5" ry="5" fill="white"/>
+  <circle cx="115" cy="108" r="2.8" fill="#3A2A1A"/>
+  <path d="M80 100 Q87 97 94 100" stroke="#A8A0A0" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M106 100 Q113 97 120 100" stroke="#A8A0A0" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M97 120 Q100 124 103 120" stroke="#C0A888" stroke-width="1.5" fill="none"/>
+  <path d="M91 136 Q100 141 109 136" stroke="#908080" stroke-width="2" fill="none" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <circle cx="100" cy="100" r="100" fill="#A78BFA"/>
+  <ellipse cx="100" cy="198" rx="62" ry="38" fill="#7C3AED"/>
+  <rect x="89" y="150" width="22" height="18" rx="9" fill="#FFE8D8"/>
+  <ellipse cx="100" cy="113" rx="36" ry="40" fill="#FFE8D8"/>
+  <!-- Gray bun -->
+  <ellipse cx="100" cy="80" rx="36" ry="28" fill="#B0A8A0"/>
+  <circle cx="100" cy="66" r="16" fill="#C8C0B8"/>
+  <!-- Bun top -->
+  <circle cx="100" cy="58" r="12" fill="#B0A8A0"/>
+  <!-- Wrinkle lines -->
+  <path d="M74 108 Q78 106 82 108" stroke="#C8A898" stroke-width="1" fill="none"/>
+  <path d="M118 108 Q122 106 126 108" stroke="#C8A898" stroke-width="1" fill="none"/>
+  <!-- Eyes (slightly smaller/softer) -->
+  <ellipse cx="86" cy="110" rx="4.5" ry="5" fill="white"/>
+  <circle cx="87" cy="110" r="2.8" fill="#3A2A1A"/>
+  <ellipse cx="114" cy="110" rx="4.5" ry="5" fill="white"/>
+  <circle cx="115" cy="110" r="2.8" fill="#3A2A1A"/>
+  <path d="M81 102 Q87 99 93 102" stroke="#B0A8A0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M107 102 Q113 99 119 102" stroke="#B0A8A0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M97 122 Q100 126 103 122" stroke="#C0A898" stroke-width="1.5" fill="none"/>
+  <path d="M89 134 Q100 142 111 134" stroke="#C08898" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- Earrings - pearl -->
+  <circle cx="64" cy="116" r="5" fill="#F8F8F0"/>
+  <circle cx="136" cy="116" r="5" fill="#F8F8F0"/>
+</svg>

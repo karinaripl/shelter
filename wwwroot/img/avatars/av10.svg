@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <circle cx="100" cy="100" r="100" fill="#EA7C53"/>
+  <ellipse cx="100" cy="198" rx="65" ry="40" fill="#C0552D"/>
+  <rect x="89" y="150" width="22" height="18" rx="9" fill="#F4D0A8"/>
+  <ellipse cx="100" cy="114" rx="38" ry="41" fill="#F4D0A8"/>
+  <ellipse cx="62" cy="114" rx="6" ry="7" fill="#F4D0A8"/>
+  <ellipse cx="138" cy="114" rx="6" ry="7" fill="#F4D0A8"/>
+  <!-- Dark messy hair -->
+  <ellipse cx="100" cy="80" rx="42" ry="30" fill="#2C1A0E"/>
+  <ellipse cx="68" cy="76" rx="12" ry="16" fill="#2C1A0E"/>
+  <ellipse cx="132" cy="76" rx="12" ry="16" fill="#2C1A0E"/>
+  <!-- Big hipster beard -->
+  <ellipse cx="100" cy="140" rx="34" ry="18" fill="#2C1A0E"/>
+  <rect x="68" y="126" width="64" height="20" fill="#2C1A0E"/>
+  <!-- Mustache -->
+  <path d="M80 122 Q90 118 100 122 Q110 118 120 122" fill="#2C1A0E"/>
+  <!-- Glasses - round hipster -->
+  <circle cx="86" cy="108" r="10" fill="none" stroke="#1A0A00" stroke-width="2.5"/>
+  <circle cx="114" cy="108" r="10" fill="none" stroke="#1A0A00" stroke-width="2.5"/>
+  <line x1="96" y1="108" x2="104" y2="108" stroke="#1A0A00" stroke-width="2"/>
+  <line x1="76" y1="108" x2="70" y2="105" stroke="#1A0A00" stroke-width="2"/>
+  <line x1="124" y1="108" x2="130" y2="105" stroke="#1A0A00" stroke-width="2"/>
+  <!-- Eyes inside glasses -->
+  <circle cx="86" cy="108" r="4" fill="white"/>
+  <circle cx="87" cy="108" r="2.5" fill="#1A0A00"/>
+  <circle cx="114" cy="108" r="4" fill="white"/>
+  <circle cx="115" cy="108" r="2.5" fill="#1A0A00"/>
+  <path d="M80 99 Q87 96 94 99" stroke="#2C1A0E" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M106 99 Q113 96 120 99" stroke="#2C1A0E" stroke-width="2" fill="none" stroke-linecap="round"/>
+</svg>

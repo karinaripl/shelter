@@ -1,0 +1,1399 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель сотрудника - Приют для животных</title>
+    <link rel="stylesheet" href="/css/employee.css?v=20">
+</head>
+<body>
+
+<div class="emp-header">
+    <h1>🐾 Приют для кошек <span class="emp-badge">Сотрудник</span></h1>
+    <div class="user-info">
+        <span class="user-name" id="empUserName">Сотрудник</span>
+        <button class="switch-mode-btn" id="switchToAdminBtn" style="display:none">🔧 Панель администратора</button>
+        <div class="avatar" id="empAvatar" onclick="openProfile()" title="Мой профиль" style="cursor:pointer">С</div>
+        <button class="logout-btn" id="logoutBtn">🚪 Выйти</button>
+    </div>
+</div>
+
+<div class="emp-layout">
+    <nav class="emp-sidebar">
+        <button class="nav-btn active" data-tab="cats">🐱 Кошки</button>
+        <button class="nav-btn" data-tab="medcards">🏥 Медкарты</button>
+        <button class="nav-btn" data-tab="procedures">📋 Процедуры</button>
+        <button class="nav-btn" data-tab="volunteers">🤝 Волонтёры</button>
+        <button class="nav-btn" data-tab="warehouse">📦 Склад</button>
+        <button class="nav-btn" data-tab="events">🎪 Мероприятия</button>
+        <button class="nav-btn" data-tab="tasks">🗓 Задачи</button>
+    </nav>
+
+    <main class="emp-content">
+
+        <!-- ===== КОШКИ ===== -->
+        <div id="tab-cats" class="tab-content active">
+            <div class="info-cards">
+                <div class="info-card"><div class="val" id="statTotal">0</div><div class="lbl">Всего кошек</div></div>
+                <div class="info-card"><div class="val" id="statInShelter">0</div><div class="lbl">В приюте</div></div>
+                <div class="info-card"><div class="val" id="statAdopted">0</div><div class="lbl">Усыновлено</div></div>
+            </div>
+            <div class="panel">
+                <div class="sub-tabs">
+                    <button class="sub-tab-btn active" data-sub="cats-list">🐱 Список кошек</button>
+                    <button class="sub-tab-btn" data-sub="cats-cages" id="cagesTabBtn">🏠 Клетки</button>
+                </div>
+
+                <div id="cats-list" class="sub-tab-content active">
+                    <div class="panel-header">
+                        <h2>🐱 Кошки</h2>
+                        <button class="btn-add" id="addCatBtn">+ Добавить</button>
+                    </div>
+                    <div class="wh-filters">
+                        <input type="text" class="search-input" id="catSearch" placeholder="🔍 Поиск по кличке или породе...">
+                        <select class="search-input" id="catStatusFilter">
+                            <option value="">Все статусы</option>
+                        </select>
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead><tr>
+                                <th>Кличка</th><th>Порода</th><th>Цвет</th><th>Пол</th>
+                                <th>Статус</th><th>Клетка</th><th>Дата рождения</th><th>Действия</th>
+                            </tr></thead>
+                            <tbody id="catsTableBody"><tr><td colspan="8" class="loading-text">Загрузка...</td></tr></tbody>
+                        </table>
+                    </div>
+                    <p class="hint-text">💡 Нажмите <strong>📂 Карточка</strong> чтобы добавить процедуры, кормление и волонтёров для конкретной кошки</p>
+                </div>
+
+                <div id="cats-cages" class="sub-tab-content">
+                    <div class="panel-header">
+                        <h2>🏠 Клетки</h2>
+                        <button class="btn-refresh" id="refreshCagesBtn">🔄 Обновить</button>
+                    </div>
+                    <div id="cagesOverview" class="cages-grid">
+                        <div class="loading-text">Загрузка...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== МЕДКАРТЫ ===== -->
+        <div id="tab-medcards" class="tab-content">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>🏥 Медицинские карты</h2>
+                    <button class="btn-add" id="addMedCardBtn">+ Создать карту</button>
+                </div>
+                <input type="text" class="search-input" id="medSearch" placeholder="🔍 Поиск по кличке...">
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr>
+                            <th>Кошка</th><th>Дата открытия</th><th>Вес (кг)</th>
+                            <th>Вакцинирована</th><th>Стерилизована</th><th>От паразитов</th><th>Действия</th>
+                        </tr></thead>
+                        <tbody id="medCardsTableBody"><tr><td colspan="7" class="loading-text">Загрузка...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== ПРОЦЕДУРЫ ===== -->
+        <div id="tab-procedures" class="tab-content">
+            <div class="panel">
+                <div class="sub-tabs">
+                    <button class="sub-tab-btn active" data-sub="proc-records">📋 Журнал процедур</button>
+                    <button class="sub-tab-btn" data-sub="proc-types">🗂 Типы процедур</button>
+                </div>
+
+                <div id="proc-records" class="sub-tab-content active">
+                    <div class="panel-header">
+                        <h2>Журнал процедур</h2>
+                        <button class="btn-add" id="addProcRecordBtn">+ Добавить запись</button>
+                    </div>
+                    <input type="text" class="search-input" id="procRecordSearch" placeholder="🔍 Поиск по кошке или типу...">
+                    <div class="table-wrapper">
+                        <table>
+                            <thead><tr>
+                                <th>Дата</th><th>Кошка</th><th>Тип процедуры</th>
+                                <th>Сотрудник</th><th>Результат</th><th>Заметки</th><th></th>
+                            </tr></thead>
+                            <tbody id="procRecordsBody"><tr><td colspan="7" class="loading-text">Загрузка...</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="proc-types" class="sub-tab-content">
+                    <div class="panel-header">
+                        <h2>Типы процедур</h2>
+                        <button class="btn-add" id="addProcTypeBtn">+ Добавить тип</button>
+                    </div>
+                    <input type="text" class="search-input" id="procTypeSearch" placeholder="🔍 Поиск по названию или описанию...">
+                    <div class="table-wrapper">
+                        <table>
+                            <thead><tr><th>Название</th><th>Описание</th><th>Норма расхода</th><th>Действия</th></tr></thead>
+                            <tbody id="procTypesBody"><tr><td colspan="4" class="loading-text">Загрузка...</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== ВОЛОНТЁРЫ ===== -->
+        <div id="tab-volunteers" class="tab-content">
+            <div class="panel">
+                <div class="sub-tabs">
+                    <button class="sub-tab-btn active" data-sub="vol-list">👤 Волонтёры</button>
+                    <button class="sub-tab-btn" data-sub="vol-cares">🐾 Уход за кошками</button>
+                </div>
+
+                <div id="vol-list" class="sub-tab-content active">
+                    <div class="panel-header">
+                        <h2>Волонтёры</h2>
+                        <button class="btn-add" id="addVolunteerBtn">+ Добавить</button>
+                    </div>
+                    <input type="text" class="search-input" id="volSearch" placeholder="🔍 Поиск по имени...">
+                    <div class="table-wrapper">
+                        <table>
+                            <thead><tr>
+                                <th>ФИО</th><th>Телефон</th><th>Email</th>
+                                <th>Навыки</th><th>Дата регистрации</th><th>Действия</th>
+                            </tr></thead>
+                            <tbody id="volunteersTableBody"><tr><td colspan="6" class="loading-text">Загрузка...</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="vol-cares" class="sub-tab-content">
+                    <div class="panel-header">
+                        <h2>Уход за кошками</h2>
+                        <button class="btn-add" id="addCareBtn">+ Закрепить волонтёра</button>
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead><tr>
+                                <th>Волонтёр</th><th>Кошка</th><th>С даты</th>
+                                <th>По дату</th><th>Статус</th>
+                            </tr></thead>
+                            <tbody id="caresTableBody"><tr><td colspan="5" class="loading-text">Загрузка...</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== СКЛАД ===== -->
+        <div id="tab-warehouse" class="tab-content">
+            <div class="panel">
+                <div id="expiringBanner" class="expiring-banner" style="display:none"></div>
+                <div class="sub-tabs">
+                    <button class="sub-tab-btn active" data-sub="wh-remains">📊 Остатки</button>
+                    <button class="sub-tab-btn" data-sub="wh-batches">📥 Партии</button>
+                    <button class="sub-tab-btn" data-sub="wh-products">🏷 Продукты</button>
+                    <button class="sub-tab-btn" data-sub="wh-expenses">📤 Расход</button>
+                </div>
+
+                <div id="wh-remains" class="sub-tab-content active">
+                    <div class="panel-header">
+                        <h2>Остатки на складе</h2>
+                        <button class="btn-refresh" id="refreshRemainsBtn">🔄 Обновить</button>
+                    </div>
+                    <div class="wh-filters">
+                        <input type="text" class="search-input" id="remainsSearch" placeholder="🔍 Поиск по продукту...">
+                        <select class="search-input" id="remainsWarehouseFilter" style="width:auto">
+                            <option value="">Все склады</option>
+                        </select>
+                        <label class="wh-filter-check"><input type="checkbox" id="remainsLowStock"> ⚠️ Только мало</label>
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead><tr>
+                                <th>Продукт</th><th>Ед. изм.</th><th>Склад</th>
+                                <th>Количество</th><th>Годен до</th>
+                            </tr></thead>
+                            <tbody id="remainsTableBody"><tr><td colspan="5" class="loading-text">Загрузка...</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="wh-batches" class="sub-tab-content">
+                    <div class="panel-header">
+                        <h2>Партии поступления</h2>
+                        <button class="btn-add" id="addBatchBtn">+ Новая партия</button>
+                    </div>
+                    <div class="wh-filters">
+                        <input type="text" class="search-input" id="batchesSearch" placeholder="🔍 Поиск по продукту...">
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead><tr>
+                                <th>Продукт</th><th>Дата поступления</th><th>Количество</th>
+                                <th>Цена за ед.</th><th>Годен до</th><th></th>
+                            </tr></thead>
+                            <tbody id="batchesTableBody"><tr><td colspan="6" class="loading-text">Загрузка...</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="wh-products" class="sub-tab-content">
+                    <div class="panel-header">
+                        <h2>Продукты и корма</h2>
+                        <button class="btn-add" id="addProductBtn">+ Добавить</button>
+                    </div>
+                    <div class="wh-filters">
+                        <input type="text" class="search-input" id="productsSearch" placeholder="🔍 Поиск по названию...">
+                        <select class="search-input" id="productsCategoryFilter" style="width:auto">
+                            <option value="">Все категории</option>
+                            <option value="Корм">Корм</option>
+                            <option value="Лакомство">Лакомство</option>
+                            <option value="Наполнитель">Наполнитель</option>
+                            <option value="Инвентарь">Инвентарь</option>
+                        </select>
+                        <label class="wh-filter-check"><input type="checkbox" id="productsActiveOnly" checked> Только активные</label>
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead><tr><th>Название</th><th>Ед. измерения</th><th>Категория</th><th>Действия</th></tr></thead>
+                            <tbody id="productsTableBody"><tr><td colspan="4" class="loading-text">Загрузка...</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="wh-expenses" class="sub-tab-content">
+                    <div class="panel-header">
+                        <h2>Расход продуктов</h2>
+                        <button class="btn-add" id="addExpenseBtn">+ Записать расход</button>
+                    </div>
+                    <div class="wh-filters">
+                        <input type="text" class="search-input" id="expensesSearch" placeholder="🔍 Поиск по продукту или кошке...">
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead><tr>
+                                <th>Дата</th><th>Продукт</th><th>Кошка</th>
+                                <th>Кол-во</th><th>Сотрудник</th><th>Заметки</th>
+                            </tr></thead>
+                            <tbody id="expensesTableBody"><tr><td colspan="6" class="loading-text">Загрузка...</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== ЗАДАЧИ ===== -->
+        <div id="tab-tasks" class="tab-content">
+
+            <!-- Навигация по неделям -->
+            <div class="week-nav-bar">
+                <button class="week-nav-btn" onclick="prevWeek()">← Пред.</button>
+                <div class="week-nav-center">
+                    <div class="week-nav-title">Рабочая неделя</div>
+                    <div class="week-nav-dates" id="weekLabel">...</div>
+                </div>
+                <button class="week-nav-btn" onclick="nextWeek()">След. →</button>
+            </div>
+
+            <!-- Еженедельные задачи -->
+            <div class="tasks-board">
+                <div class="task-column">
+                    <div class="task-col-header">
+                        <span>🔍 Базовый осмотр</span>
+                        <span class="task-progress-badge" id="inspectionProgress">0/0</span>
+                    </div>
+                    <div id="inspectionList"><div class="task-empty">Загрузка...</div></div>
+                </div>
+                <div class="task-column">
+                    <div class="task-col-header">
+                        <span>🪣 Замена наполнителя</span>
+                        <span class="task-progress-badge" id="litterProgress">0/0</span>
+                    </div>
+                    <div class="task-litter-batch-row">
+                        <label>Партия:</label>
+                        <select id="litterBatchSel" onchange="saveLitterBatch(this.value)">
+                            <option value="">— выберите —</option>
+                        </select>
+                    </div>
+                    <div id="litterList"><div class="task-empty">Загрузка...</div></div>
+                </div>
+            </div>
+
+            <!-- Ежедневное кормление -->
+            <div class="tasks-daily-section">
+                <div class="tasks-section-title">🍽 Ежедневное кормление</div>
+                <div id="dailyFeedingList"></div>
+            </div>
+
+        </div>
+
+        <!-- ===== МЕРОПРИЯТИЯ ===== -->
+        <div id="tab-events" class="tab-content">
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>🎪 Мероприятия</h2>
+                    <button class="btn-add" id="addEventBtn">+ Добавить</button>
+                </div>
+                <div id="eventsUpcomingSection">
+                    <div class="events-section-title">📅 Предстоящие</div>
+                    <div class="events-cards" id="eventsUpcoming"><div class="loading-text">Загрузка...</div></div>
+                </div>
+                <div id="eventsPastSection" style="margin-top:24px">
+                    <div class="events-section-title">🗂 Прошедшие</div>
+                    <div class="events-cards" id="eventsPast"></div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<!-- ===== MODAL: КОШКА ===== -->
+<div id="catModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="catModalTitle">Кошка</h3>
+            <button class="modal-close" data-modal="catModal">&times;</button>
+        </div>
+        <form id="catForm" novalidate>
+            <div class="form-section">
+                <h4>Основная информация</h4>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Кличка</label>
+                        <input type="text" id="catName">
+                    </div>
+                    <div class="form-group">
+                        <label>Порода</label>
+                        <input type="text" id="catBreed">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Цвет</label>
+                        <input type="text" id="catColor">
+                    </div>
+                    <div class="form-group">
+                        <label>Пол</label>
+                        <select id="catGender">
+                            <option value="">-- Выберите --</option>
+                            <option value="М">Мужской</option>
+                            <option value="Ж">Женский</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Статус *</label>
+                        <select id="catStatus" required>
+                            <option value="">-- Выберите статус --</option>
+                        </select>
+                        <div class="error-text" id="errCatStatus"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Клетка *</label>
+                        <select id="catCage" required>
+                            <option value="">-- Выберите клетку --</option>
+                        </select>
+                        <div class="error-text" id="errCatCage"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-section">
+                <h4>Даты и происхождение</h4>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Дата рождения</label>
+                        <input type="date" id="catBirthDate">
+                    </div>
+                    <div class="form-group">
+                        <label id="catDepartureDateLabel">Дата ухода</label>
+                        <input type="date" id="catDepartureDate">
+                        <div class="error-text" id="errCatDepartureDate"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Источник поступления *</label>
+                    <select id="catSource" required>
+                        <option value="">-- Выберите --</option>
+                        <option value="улица">С улицы</option>
+                        <option value="от_хозяина">От хозяина</option>
+                        <option value="подброшен">Подброшен</option>
+                        <option value="другой_приют">Из другого приюта</option>
+                        <option value="родился_в_приюте">Родился в приюте</option>
+                    </select>
+                    <div class="error-text" id="errCatSource"></div>
+                </div>
+            </div>
+            <div class="form-section">
+                <h4>Описание</h4>
+                <div class="form-group">
+                    <label>Характер</label>
+                    <textarea id="catCharacter" placeholder="Опишите характер кошки..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Особые отметины</label>
+                    <textarea id="catMarks" placeholder="Особые приметы, отметины..."></textarea>
+                </div>
+            </div>
+            <div class="form-buttons">
+                <button type="submit" class="btn-save">Сохранить</button>
+                <button type="button" class="btn-cancel" data-modal="catModal">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===== MODAL: МЕДКАРТА ===== -->
+<div id="medCardModal" class="modal">
+    <div class="modal-content modal-sm">
+        <div class="modal-header">
+            <h3 id="medCardModalTitle">Медицинская карта</h3>
+            <button class="modal-close" data-modal="medCardModal">&times;</button>
+        </div>
+        <form id="medCardForm" novalidate>
+            <div class="form-section">
+                <h4>Данные карты</h4>
+                <div class="form-group" id="medCardCatGroup">
+                    <label>Кошка *</label>
+                    <select id="medCardCat" required>
+                        <option value="">-- Выберите кошку --</option>
+                    </select>
+                </div>
+                <div class="form-group" id="medCardDateGroup">
+                    <label>Дата открытия *</label>
+                    <input type="date" id="medCardDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Вес (кг)</label>
+                    <input type="number" id="medWeight" step="0.01" min="0" placeholder="3.50">
+                </div>
+                <div class="form-group">
+                    <div class="checkbox-row">
+                        <input type="checkbox" id="medVaccinated">
+                        <label for="medVaccinated">Вакцинирована</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox-row">
+                        <input type="checkbox" id="medSterilized">
+                        <label for="medSterilized">Стерилизована</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox-row">
+                        <input type="checkbox" id="medParasite">
+                        <label for="medParasite">Обработана от паразитов</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-buttons">
+                <button type="submit" class="btn-save">Сохранить</button>
+                <button type="button" class="btn-cancel" data-modal="medCardModal">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===== MODAL: ЗАПИСИ МЕДКАРТЫ ===== -->
+<div id="medRecordModal" class="modal">
+    <div class="modal-content modal-sm">
+        <div class="modal-header">
+            <h3 id="medRecordModalTitle">Медкарта: записи</h3>
+            <button class="modal-close" data-modal="medRecordModal">&times;</button>
+        </div>
+        <div style="padding:16px 24px 0">
+            <div class="detail-records-header">История записей</div>
+            <div id="medRecordsList" class="detail-records-list" style="max-height:190px;overflow-y:auto;margin-bottom:16px">
+                <div class="loading-text" style="padding:12px">Загрузка...</div>
+            </div>
+        </div>
+        <form id="medRecordForm" novalidate>
+            <div class="form-section" style="border-top:2px solid #e8f5e9">
+                <h4 style="color:#27ae60;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-bottom:12px">+ Новая запись</h4>
+                <div class="form-group">
+                    <label>Дата приёма *</label>
+                    <input type="date" id="mrDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Диагноз</label>
+                    <textarea id="mrDiagnosis" placeholder="Диагноз..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Назначения</label>
+                    <textarea id="mrPrescriptions" placeholder="Назначения, лечение..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Примечания</label>
+                    <textarea id="mrNotes" placeholder="Дополнительные заметки..."></textarea>
+                </div>
+            </div>
+            <div class="form-buttons">
+                <button type="submit" class="btn-save">Добавить запись</button>
+                <button type="button" class="btn-cancel" data-modal="medRecordModal">Закрыть</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- ===== MODAL: ВОЛОНТЁР ===== -->
+<div id="volunteerModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="volModalTitle">Волонтёр</h3>
+            <button class="modal-close" data-modal="volunteerModal">&times;</button>
+        </div>
+        <form id="volunteerForm" novalidate>
+            <div class="form-section">
+                <h4>Личные данные</h4>
+                <div class="form-group">
+                    <label>ФИО *</label>
+                    <input type="text" id="volName" required placeholder="Иванова Мария Сергеевна">
+                    <div class="error-text" id="errVolName"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Телефон</label>
+                        <input type="text" id="volPhone" placeholder="8XXXXXXXXXX">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="text" id="volEmail" placeholder="example@mail.ru" autocomplete="email">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Адрес</label>
+                    <input type="text" id="volAddress">
+                </div>
+            </div>
+            <div class="form-section">
+                <h4>Паспорт и даты</h4>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Серия паспорта</label>
+                        <input type="text" id="volPassSeries" maxlength="4" placeholder="1234">
+                    </div>
+                    <div class="form-group">
+                        <label>Номер паспорта</label>
+                        <input type="text" id="volPassNumber" maxlength="6" placeholder="567890">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Дата рождения</label>
+                        <input type="date" id="volBirthDate">
+                    </div>
+                    <div class="form-group">
+                        <label>Дата регистрации *</label>
+                        <input type="date" id="volRegDate" required>
+                    </div>
+                </div>
+            </div>
+            <div class="form-section">
+                <div class="form-group">
+                    <label>Навыки</label>
+                    <textarea id="volSkills" placeholder="Опыт с животными, ветеринарные навыки..."></textarea>
+                </div>
+            </div>
+            <div class="form-buttons">
+                <button type="submit" class="btn-save">Сохранить</button>
+                <button type="button" class="btn-cancel" data-modal="volunteerModal">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===== MODAL: УХОД (volunteer_care) ===== -->
+<div id="careModal" class="modal">
+    <div class="modal-content modal-sm">
+        <div class="modal-header">
+            <h3 id="careModalTitle">Закрепить волонтёра</h3>
+            <button class="modal-close" data-modal="careModal">&times;</button>
+        </div>
+        <form id="careForm" novalidate>
+            <div class="form-section">
+                <div class="form-group">
+                    <label>Волонтёр *</label>
+                    <select id="careVolunteer" required>
+                        <option value="">-- Выберите волонтёра --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Кошка *</label>
+                    <select id="careCat" required>
+                        <option value="">-- Выберите кошку --</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Дата начала *</label>
+                        <input type="date" id="careStart" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Дата окончания</label>
+                        <input type="date" id="careEnd">
+                    </div>
+                </div>
+            </div>
+            <div class="form-buttons">
+                <button type="submit" class="btn-save">Сохранить</button>
+                <button type="button" class="btn-cancel" data-modal="careModal">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- ===== MODAL: ВОССТАНОВЛЕНИЕ УХОДА ===== -->
+<div id="restoreCareModal" class="modal">
+    <div class="modal-content modal-sm">
+        <div class="modal-header">
+            <h3>Восстановить уход</h3>
+            <button class="modal-close" data-modal="restoreCareModal">&times;</button>
+        </div>
+        <div class="form-section">
+            <p id="restoreCareName" style="margin-bottom:12px;font-weight:500;"></p>
+            <div class="form-group">
+                <label>Дата начала *</label>
+                <input type="date" id="restoreStartDate">
+                <div class="error-text" id="restoreStartErr"></div>
+            </div>
+        </div>
+        <div class="form-buttons">
+            <button type="button" class="btn-save" onclick="confirmRestoreCare()">Восстановить</button>
+            <button type="button" class="btn-cancel" data-modal="restoreCareModal">Отмена</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- ===== MODAL: ТИП ПРОЦЕДУРЫ ===== -->
+<div id="procTypeModal" class="modal">
+    <div class="modal-content modal-sm">
+        <div class="modal-header">
+            <h3 id="procTypeModalTitle">Тип процедуры</h3>
+            <button class="modal-close" data-modal="procTypeModal">&times;</button>
+        </div>
+        <form id="procTypeForm" novalidate>
+            <div class="form-section">
+                <div class="form-group">
+                    <label>Название *</label>
+                    <input type="text" id="ptName" required>
+                    <div class="error-text" id="errPtName"></div>
+                </div>
+                <div class="form-group">
+                    <label>Описание</label>
+                    <textarea id="ptDesc"></textarea>
+                </div>
+            </div>
+            <div class="form-section" style="border-top:2px solid #e8f5e9">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+                    <label style="margin:0;font-weight:600">📦 Нормы расхода</label>
+                    <button type="button" class="btn-add-rate" onclick="addPtRate()">+ Добавить товар</button>
+                </div>
+                <div id="ptRatesList"></div>
+            </div>
+            <div class="form-buttons">
+                <button type="submit" class="btn-save">Сохранить</button>
+                <button type="button" class="btn-cancel" data-modal="procTypeModal">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===== MODAL: ЗАПИСЬ ПРОЦЕДУРЫ ===== -->
+<div id="procRecordModal" class="modal">
+    <div class="modal-content modal-sm">
+        <div class="modal-header">
+            <h3>Добавить процедуру</h3>
+            <button class="modal-close" data-modal="procRecordModal">&times;</button>
+        </div>
+        <form id="procRecordForm" novalidate>
+            <div class="form-section">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Кошка *</label>
+                        <select id="prCat" required>
+                            <option value="">-- Выберите кошку --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Тип процедуры *</label>
+                        <select id="prType" required onchange="onProcTypeChangePR()">
+                            <option value="">-- Выберите тип --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Дата процедуры *</label>
+                    <input type="date" id="prDate" required>
+                </div>
+                <!-- Норма расхода и фактический расход -->
+                <div id="pr-consumption-block" style="display:none">
+                    <div class="consumption-norm" id="pr-norm-info"></div>
+                    <div class="consumption-actual">
+                        <span class="consumption-actual-label">Фактически израсходовано:</span>
+                        <div class="form-row" style="margin-top:8px">
+                            <div class="form-group">
+                                <label>Партия (продукт)</label>
+                                <select id="pr-exp-batch"><option value="">-- Партия (необязательно) --</option></select>
+                            </div>
+                            <div class="form-group" style="max-width:120px">
+                                <label>Количество</label>
+                                <input type="number" id="pr-exp-qty" min="0.001" step="0.001" placeholder="по норме">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Результат</label>
+                    <textarea id="prResult"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Заметки</label>
+                    <textarea id="prNotes"></textarea>
+                </div>
+            </div>
+            <div class="form-buttons">
+                <button type="submit" class="btn-save">Сохранить</button>
+                <button type="button" class="btn-cancel" data-modal="procRecordModal">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===== MODAL: ПРОДУКТ ===== -->
+<div id="productModal" class="modal">
+    <div class="modal-content modal-sm">
+        <div class="modal-header">
+            <h3 id="productModalTitle">Продукт</h3>
+            <button class="modal-close" data-modal="productModal">&times;</button>
+        </div>
+        <form id="productForm" novalidate>
+            <div class="form-section">
+                <div class="form-group">
+                    <label>Название *</label>
+                    <input type="text" id="prodName" required>
+                </div>
+                <div class="form-group">
+                    <label>Единица измерения</label>
+                    <select id="prodUnit">
+                        <option value="">— не указана —</option>
+                        <option value="кг">кг</option>
+                        <option value="г">г</option>
+                        <option value="шт">шт</option>
+                        <option value="л">л</option>
+                        <option value="мл">мл</option>
+                        <option value="уп">уп</option>
+                        <option value="таб">таб</option>
+                        <option value="доза">доза</option>
+                        <option value="мешок">мешок</option>
+                        <option value="пачка">пачка</option>
+                        <option value="пара">пара</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Категория</label>
+                    <select id="prodCategory">
+                        <option value="Корм">Корм</option>
+                        <option value="Лакомство">Лакомство</option>
+                        <option value="Наполнитель">Наполнитель</option>
+                        <option value="Инвентарь">Инвентарь</option>
+                        <option value="Медицина">Медицина</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-buttons">
+                <button type="submit" class="btn-save">Сохранить</button>
+                <button type="button" class="btn-cancel" data-modal="productModal">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===== MODAL: ПАРТИЯ ===== -->
+<div id="batchModal" class="modal">
+    <div class="modal-content modal-sm">
+        <div class="modal-header">
+            <h3>Новая партия</h3>
+            <button class="modal-close" data-modal="batchModal">&times;</button>
+        </div>
+        <form id="batchForm" novalidate>
+            <div class="form-section">
+                <div class="form-group">
+                    <label>Продукт *</label>
+                    <select id="batchProduct" required>
+                        <option value="">-- Выберите продукт --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Склад *</label>
+                    <select id="batchWarehouse" required>
+                        <option value="">-- Выберите склад --</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Дата поступления *</label>
+                        <input type="date" id="batchArrival" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Годен до</label>
+                        <input type="date" id="batchExpiry">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Количество *</label>
+                        <input type="number" id="batchQty" min="0.001" step="0.001" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Цена за единицу (₽)</label>
+                        <input type="number" id="batchPrice" step="0.01" min="0">
+                    </div>
+                </div>
+            </div>
+            <div class="form-buttons">
+                <button type="submit" class="btn-save">Сохранить</button>
+                <button type="button" class="btn-cancel" data-modal="batchModal">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===== MODAL: РАСХОД ===== -->
+<div id="expenseModal" class="modal">
+    <div class="modal-content modal-sm">
+        <div class="modal-header">
+            <h3>Записать расход</h3>
+            <button class="modal-close" data-modal="expenseModal">&times;</button>
+        </div>
+        <form id="expenseForm" novalidate>
+            <div class="form-section">
+                <div class="form-group">
+                    <label>Партия (продукт) *</label>
+                    <select id="expBatch" required>
+                        <option value="">-- Выберите партию --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Кошка *</label>
+                    <select id="expCat" required>
+                        <option value="">-- Выберите кошку --</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Дата *</label>
+                        <input type="date" id="expDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Количество *</label>
+                        <input type="number" id="expQty" min="0.001" step="0.001" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Заметки</label>
+                    <textarea id="expNotes"></textarea>
+                </div>
+            </div>
+            <div class="form-buttons">
+                <button type="submit" class="btn-save">Сохранить</button>
+                <button type="button" class="btn-cancel" data-modal="expenseModal">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===== MODAL: КАРТОЧКА КОШКИ ===== -->
+<div id="catDetailModal" class="modal">
+    <div class="modal-content modal-wide">
+        <div class="modal-header">
+            <div>
+                <h3 id="catDetailTitle">Карточка кошки</h3>
+                <div class="cat-info-bar" id="catInfoBar"></div>
+            </div>
+            <button class="modal-close" data-modal="catDetailModal">&times;</button>
+        </div>
+
+        <div class="detail-tabs">
+            <button class="detail-tab-btn active" onclick="switchDetailTab('det-proc', this)">📋 Процедуры</button>
+            <button class="detail-tab-btn"        onclick="switchDetailTab('det-feed', this)">🍽 Кормление</button>
+            <button class="detail-tab-btn"        onclick="switchDetailTab('det-inv', this)">🧸 Инвентарь</button>
+            <button class="detail-tab-btn"        onclick="switchDetailTab('det-vols', this)">🤝 Волонтёры</button>
+        </div>
+
+        <!-- ПРОЦЕДУРЫ -->
+        <div id="det-proc" class="detail-content active">
+            <div class="detail-add-section" id="detProcForm">
+                <h4>Добавить запись о процедуре</h4>
+                <div class="inline-form">
+                    <div class="inline-field">
+                        <label>Тип процедуры *</label>
+                        <select id="dp-type" onchange="onProcTypeChange()"><option value="">-- Выберите --</option></select>
+                    </div>
+                    <div class="inline-field">
+                        <label>Дата *</label>
+                        <input type="date" id="dp-date">
+                    </div>
+                    <div class="inline-field">
+                        <label>Результат</label>
+                        <input type="text" id="dp-result" placeholder="Результат процедуры">
+                    </div>
+                    <div class="inline-field">
+                        <label>Заметки</label>
+                        <input type="text" id="dp-notes" placeholder="Дополнительно">
+                    </div>
+                </div>
+                <!-- Норма расхода и фактический расход -->
+                <div id="dp-consumption-block" style="display:none">
+                    <div class="consumption-norm" id="dp-norm-info"></div>
+                    <div class="consumption-actual">
+                        <span class="consumption-actual-label">Фактически израсходовано:</span>
+                        <div class="inline-form" style="margin-top:6px">
+                            <div class="inline-field wide">
+                                <label>Партия (продукт)</label>
+                                <select id="dp-exp-batch"><option value="">-- Выберите партию --</option></select>
+                            </div>
+                            <div class="inline-field">
+                                <label>Количество</label>
+                                <input type="number" id="dp-exp-qty" min="0.001" step="0.001" placeholder="по норме">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-inline-add" onclick="addDetailProcedure()">+ Добавить процедуру</button>
+            </div>
+            <div id="detProcLocked" class="locked-notice" style="display:none">
+                🔒 Добавление процедур недоступно — кошка покинула приют
+            </div>
+            <div class="detail-records-header">История процедур</div>
+            <div class="detail-records-list" id="detProcList">
+                <div class="loading-text">Загрузка...</div>
+            </div>
+        </div>
+
+        <!-- КОРМЛЕНИЕ -->
+        <div id="det-feed" class="detail-content">
+            <div class="detail-add-section" id="detFeedForm">
+                <h4>Добавить запись о кормлении</h4>
+                <div class="inline-form">
+                    <div class="inline-field wide">
+                        <label>Партия (продукт) *</label>
+                        <select id="df-batch"><option value="">-- Выберите партию --</option></select>
+                    </div>
+                    <div class="inline-field">
+                        <label>Дата *</label>
+                        <input type="date" id="df-date">
+                    </div>
+                    <div class="inline-field">
+                        <label>Количество *</label>
+                        <input type="number" id="df-qty" min="0.001" step="0.001" placeholder="0.3">
+                    </div>
+                    <div class="inline-field">
+                        <label>Заметки</label>
+                        <input type="text" id="df-notes" placeholder="Дополнительно">
+                    </div>
+                    <button class="btn-inline-add" onclick="addDetailExpense()">+ Добавить</button>
+                </div>
+            </div>
+            <div id="detFeedLocked" class="locked-notice" style="display:none">
+                🔒 Добавление кормления недоступно — кошка покинула приют
+            </div>
+            <div class="detail-records-header">История кормления</div>
+            <div class="detail-records-list" id="detFeedList">
+                <div class="loading-text">Загрузка...</div>
+            </div>
+        </div>
+
+        <!-- ИНВЕНТАРЬ -->
+        <div id="det-inv" class="detail-content">
+            <div class="detail-add-section" id="detInvForm">
+                <h4>Добавить / заменить инвентарь</h4>
+                <div class="inline-form">
+                    <div class="inline-field">
+                        <label>Действие</label>
+                        <select id="di-type">
+                            <option value="">Выдача (новое)</option>
+                            <option value="Замена">Замена</option>
+                        </select>
+                    </div>
+                    <div class="inline-field wide">
+                        <label>Товар (партия) *</label>
+                        <select id="di-batch"><option value="">-- Выберите --</option></select>
+                    </div>
+                    <div class="inline-field">
+                        <label>Дата *</label>
+                        <input type="date" id="di-date">
+                    </div>
+                    <div class="inline-field">
+                        <label>Количество *</label>
+                        <input type="number" id="di-qty" min="0.001" step="0.001" placeholder="1">
+                    </div>
+                    <div class="inline-field">
+                        <label>Заметки</label>
+                        <input type="text" id="di-notes" placeholder="Дополнительно">
+                    </div>
+                    <button class="btn-inline-add" onclick="addDetailInventory()">+ Добавить</button>
+                </div>
+            </div>
+            <div id="detInvLocked" class="locked-notice" style="display:none">
+                🔒 Добавление инвентаря недоступно — кошка покинула приют
+            </div>
+            <div class="detail-records-header">История выдачи и замены</div>
+            <div class="detail-records-list" id="detInvList">
+                <div class="loading-text">Загрузка...</div>
+            </div>
+        </div>
+
+        <!-- ВОЛОНТЁРЫ -->
+        <div id="det-vols" class="detail-content">
+            <div class="detail-add-section" id="detVolForm">
+                <h4>Закрепить волонтёра за кошкой</h4>
+                <div class="inline-form">
+                    <div class="inline-field wide">
+                        <label>Волонтёр *</label>
+                        <select id="dv-volunteer"><option value="">-- Выберите волонтёра --</option></select>
+                    </div>
+                    <div class="inline-field">
+                        <label>Дата начала *</label>
+                        <input type="date" id="dv-start">
+                    </div>
+                    <div class="inline-field">
+                        <label>Дата окончания</label>
+                        <input type="date" id="dv-end">
+                    </div>
+                    <button class="btn-inline-add" onclick="addDetailVolunteer()">+ Закрепить</button>
+                </div>
+            </div>
+            <div id="detVolLocked" class="locked-notice" style="display:none">
+                🔒 Закрепление волонтёров недоступно — кошка покинула приют
+            </div>
+            <div class="detail-records-header">Закреплённые волонтёры</div>
+            <div class="detail-records-list" id="detVolList">
+                <div class="loading-text">Загрузка...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== MODAL: ПЕРЕСЕЛЕНИЕ КОШКИ ===== -->
+<div id="moveCatModal" class="modal">
+    <div class="modal-content modal-sm">
+        <div class="modal-header">
+            <h3 id="moveCatTitle">Переселить кошку</h3>
+            <button class="modal-close" data-modal="moveCatModal">&times;</button>
+        </div>
+        <div class="form-section">
+            <div class="form-group">
+                <label>Кошка</label>
+                <div id="moveCatInfo" class="move-info-text"></div>
+            </div>
+            <div class="form-group">
+                <label>Текущая клетка</label>
+                <div id="moveFromCage" class="move-info-text"></div>
+            </div>
+            <div class="form-group">
+                <label>Переселить в клетку *</label>
+                <select id="moveToCage">
+                    <option value="">-- Выберите клетку --</option>
+                </select>
+                <div class="error-text" id="errMoveToCage"></div>
+            </div>
+        </div>
+        <div class="form-buttons">
+            <button type="button" class="btn-save" onclick="confirmMoveCat()">Переселить</button>
+            <button type="button" class="btn-cancel" data-modal="moveCatModal">Отмена</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== MODAL: ПРОЦЕДУРА → МЕДКАРТА (после catDetailModal — важен порядок для z-index) ===== -->
+<div id="procToMedModal" class="modal">
+    <div class="modal-content modal-sm">
+        <div class="modal-header">
+            <h3>Запись в медкарту</h3>
+            <button class="modal-close" data-modal="procToMedModal">&times;</button>
+        </div>
+
+        <!-- Что было заполнено в процедуре -->
+        <div class="form-section">
+            <div class="ptm-proc-summary">
+                <div class="ptm-proc-summary-title">📋 Данные процедуры</div>
+                <div id="ptmProcInfo"></div>
+            </div>
+        </div>
+
+        <!-- Нет медкарты -->
+        <div id="ptmNoCardMsg" class="form-section" style="display:none">
+            <div class="locked-notice">
+                ⚠️ У этой кошки нет медкарты. Сначала создайте медкарту в разделе <strong>Медкарты</strong>.
+            </div>
+        </div>
+
+        <!-- Форма записи в медкарту -->
+        <div id="ptmFormSection" class="form-section" style="border-top:2px solid #e8f5e9">
+            <h4 style="color:#27ae60;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-bottom:12px">Запись в медкарту</h4>
+            <div class="form-group">
+                <label>Дата *</label>
+                <input type="date" id="ptmDate">
+            </div>
+            <div class="form-group">
+                <label>Диагноз</label>
+                <textarea id="ptmDiagnosis" placeholder="Диагноз..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Назначения</label>
+                <textarea id="ptmPrescriptions" placeholder="Назначения, лечение..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Примечания</label>
+                <textarea id="ptmNotes" placeholder="Заметки..."></textarea>
+            </div>
+        </div>
+
+        <div class="form-buttons">
+            <button type="button" class="btn-save" onclick="saveProcToMedRecord()">Добавить в медкарту</button>
+            <button type="button" class="btn-cancel" data-modal="procToMedModal">Пропустить</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== MODAL: МЕРОПРИЯТИЕ (создание/редактирование) ===== -->
+<div id="eventModal" class="modal">
+    <div class="modal-content modal-sm">
+        <div class="modal-header">
+            <h3 id="eventModalTitle">Мероприятие</h3>
+            <button class="modal-close" data-modal="eventModal">&times;</button>
+        </div>
+        <form id="eventForm" novalidate>
+            <div class="form-section">
+                <div class="form-group">
+                    <label>Название *</label>
+                    <input type="text" id="evName" required placeholder="Выставка, день открытых дверей...">
+                </div>
+                <div class="form-group">
+                    <label>Дата *</label>
+                    <input type="date" id="evDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Место проведения</label>
+                    <input type="text" id="evLocation" placeholder="Адрес или название места">
+                </div>
+                <div class="form-group">
+                    <label>Ответственный сотрудник *</label>
+                    <select id="evEmployee" required>
+                        <option value="">-- Выберите --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Итог / заметки</label>
+                    <textarea id="evNotes" rows="3" placeholder="Результаты мероприятия, особые моменты..."></textarea>
+                </div>
+            </div>
+            <div class="form-buttons">
+                <button type="submit" class="btn-save">Сохранить</button>
+                <button type="button" class="btn-cancel" data-modal="eventModal">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===== MODAL: ДЕТАЛИ МЕРОПРИЯТИЯ ===== -->
+<div id="eventDetailModal" class="modal">
+    <div class="modal-content modal-lg">
+        <div class="modal-header">
+            <div>
+                <h3 id="evDetailName">Мероприятие</h3>
+                <div class="cat-info-bar" id="evDetailInfo"></div>
+            </div>
+            <button class="modal-close" data-modal="eventDetailModal">&times;</button>
+        </div>
+
+        <div class="ev-notes-block" id="evDetailNotesBlock" style="display:none">
+            <div class="ev-notes-label">📝 Итог мероприятия</div>
+            <div class="ev-notes-text" id="evDetailNotes"></div>
+        </div>
+
+        <div class="detail-add-section" id="evAddCatSection">
+            <h4>Добавить кошку в мероприятие</h4>
+            <div class="inline-form">
+                <div class="inline-field wide">
+                    <label>Кошка *</label>
+                    <select id="evAddCat"><option value="">-- Выберите --</option></select>
+                </div>
+                <div class="inline-field wide">
+                    <label>Самочувствие после</label>
+                    <select id="evAddCondition">
+                        <option value="">— Не указано —</option>
+                        <option value="Отличное">Отличное</option>
+                        <option value="Хорошее">Хорошее</option>
+                        <option value="Удовлетворительное">Удовлетворительное</option>
+                        <option value="Стресс">Стресс</option>
+                        <option value="Плохое">Плохое</option>
+                    </select>
+                </div>
+                <button class="btn-inline-add" onclick="addCatToEvent()">+ Добавить</button>
+            </div>
+        </div>
+
+        <div class="ev-date-notice" id="evDateNotice" style="display:none">
+            🔒 Добавление кошек доступно только в день проведения мероприятия
+        </div>
+        <div class="detail-records-header">Участвующие кошки</div>
+        <div class="detail-records-list" id="evCatsList">
+            <div class="loading-text">Загрузка...</div>
+        </div>
+    </div>
+</div>
+
+<div id="toastMessage" class="toast hidden"></div>
+
+<!-- ===== ПРОФИЛЬ ===== -->
+<div id="profileModal" class="modal">
+    <div class="modal-content modal-lg">
+        <div class="modal-header">
+            <h3 id="profileModalTitle">👤 Мой профиль</h3>
+            <div style="display:flex;gap:8px;align-items:center">
+                <button class="profile-edit-btn" id="profileEditToggleBtn" onclick="toggleProfileEdit()">✏️ Редактировать</button>
+                <button class="modal-close" data-modal="profileModal">&times;</button>
+            </div>
+        </div>
+        <div class="profile-layout">
+            <!-- Левая колонка: аватар -->
+            <div class="profile-left">
+                <div class="profile-avatar-preview" id="profileAvatarPreview"></div>
+                <div class="profile-name" id="profileName">—</div>
+                <div class="profile-position" id="profilePosition">—</div>
+                <div class="profile-avatar-section">
+                    <div class="profile-avatar-title">Аватар</div>
+                    <div class="avatar-grid" id="avatarGrid"></div>
+                </div>
+            </div>
+
+            <!-- Правая колонка: просмотр -->
+            <div class="profile-right" id="profileViewPanel">
+                <div class="profile-info-grid">
+                    <div class="profile-info-item">
+                        <span class="profile-info-label">📞 Телефон</span>
+                        <span class="profile-info-value" id="profilePhone">—</span>
+                    </div>
+                    <div class="profile-info-item">
+                        <span class="profile-info-label">📧 Email</span>
+                        <span class="profile-info-value" id="profileEmail">—</span>
+                    </div>
+                    <div class="profile-info-item">
+                        <span class="profile-info-label">🎂 Дата рождения</span>
+                        <span class="profile-info-value" id="profileBirth">—</span>
+                    </div>
+                    <div class="profile-info-item">
+                        <span class="profile-info-label">📅 Дата приёма</span>
+                        <span class="profile-info-value" id="profileHire">—</span>
+                    </div>
+                    <div class="profile-info-item">
+                        <span class="profile-info-label">🏠 Адрес</span>
+                        <span class="profile-info-value" id="profileAddress">—</span>
+                    </div>
+                    <div class="profile-info-item">
+                        <span class="profile-info-label">🪪 Паспорт</span>
+                        <span class="profile-info-value" id="profilePassport">—</span>
+                    </div>
+                    <div class="profile-info-item">
+                        <span class="profile-info-label">👤 Логин</span>
+                        <span class="profile-info-value" id="profileLogin">—</span>
+                    </div>
+                    <div class="profile-info-item">
+                        <span class="profile-info-label">⏰ Часов в неделю</span>
+                        <span class="profile-info-value" id="profileHours">—</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Правая колонка: редактирование -->
+            <div class="profile-right" id="profileEditPanel" style="display:none">
+                <form id="profileEditForm" onsubmit="saveProfileEdit(event)" novalidate>
+                    <div class="pedit-grid">
+
+                        <div class="pedit-field pedit-full">
+                            <label class="pedit-label">ФИО <span class="pedit-req">*</span></label>
+                            <input class="pedit-input" id="peditName" type="text" placeholder="Иванова Мария Петровна" autocomplete="name">
+                            <div class="pedit-hint">Фамилия Имя Отчество — каждое слово с заглавной</div>
+                            <div class="pedit-error" id="errPeditName"></div>
+                        </div>
+
+                        <div class="pedit-field">
+                            <label class="pedit-label">Телефон</label>
+                            <input class="pedit-input" id="peditPhone" type="tel" placeholder="89991234567" autocomplete="tel">
+                            <div class="pedit-hint">11 цифр: 8XXXXXXXXXX или +7XXXXXXXXXX</div>
+                            <div class="pedit-error" id="errPeditPhone"></div>
+                        </div>
+
+                        <div class="pedit-field">
+                            <label class="pedit-label">Email</label>
+                            <input class="pedit-input" id="peditEmail" type="email" placeholder="mail@example.com" autocomplete="email">
+                            <div class="pedit-hint">Формат: адрес@домен.зона</div>
+                            <div class="pedit-error" id="errPeditEmail"></div>
+                        </div>
+
+                        <div class="pedit-field pedit-full">
+                            <label class="pedit-label">Адрес</label>
+                            <input class="pedit-input" id="peditAddress" type="text" placeholder="г. Москва, ул. Пушкина, д. 1, кв. 2" autocomplete="street-address">
+                            <div class="pedit-hint">Город, улица, дом, квартира</div>
+                            <div class="pedit-error" id="errPeditAddress"></div>
+                        </div>
+
+                        <div class="pedit-field">
+                            <label class="pedit-label">Серия паспорта</label>
+                            <input class="pedit-input" id="peditPassSeries" type="text" placeholder="1234" maxlength="4" autocomplete="off">
+                            <div class="pedit-hint">Ровно 4 цифры</div>
+                            <div class="pedit-error" id="errPeditPassSeries"></div>
+                        </div>
+
+                        <div class="pedit-field">
+                            <label class="pedit-label">Номер паспорта</label>
+                            <input class="pedit-input" id="peditPassNumber" type="text" placeholder="567890" maxlength="6" autocomplete="off">
+                            <div class="pedit-hint">Ровно 6 цифр</div>
+                            <div class="pedit-error" id="errPeditPassNumber"></div>
+                        </div>
+
+                        <div class="pedit-field pedit-full">
+                            <label class="pedit-label">Логин <span class="pedit-req">*</span></label>
+                            <input class="pedit-input" id="peditLogin" type="text" placeholder="ivan_petrov" autocomplete="username">
+                            <div class="pedit-hint">Минимум 3 символа, без пробелов, только буквы/цифры/_</div>
+                            <div class="pedit-error" id="errPeditLogin"></div>
+                        </div>
+
+                        <div class="pedit-field">
+                            <label class="pedit-label">Новый пароль</label>
+                            <div class="pedit-pass-wrap">
+                                <input class="pedit-input" id="peditPassword" type="password" placeholder="Оставьте пустым чтобы не менять" autocomplete="new-password">
+                                <button type="button" class="pedit-eye" onclick="togglePassVis('peditPassword', this)">👁</button>
+                            </div>
+                            <div class="pedit-hint">Минимум 6 символов</div>
+                            <div class="pedit-error" id="errPeditPassword"></div>
+                        </div>
+
+                        <div class="pedit-field">
+                            <label class="pedit-label">Подтвердить пароль</label>
+                            <div class="pedit-pass-wrap">
+                                <input class="pedit-input" id="peditPasswordConfirm" type="password" placeholder="Повторите новый пароль" autocomplete="new-password">
+                                <button type="button" class="pedit-eye" onclick="togglePassVis('peditPasswordConfirm', this)">👁</button>
+                            </div>
+                            <div class="pedit-hint">Должен совпасть с новым паролем</div>
+                            <div class="pedit-error" id="errPeditPasswordConfirm"></div>
+                        </div>
+
+                    </div>
+                    <div class="pedit-actions">
+                        <button type="submit" class="btn-save-profile">💾 Сохранить</button>
+                        <button type="button" class="btn-cancel-profile" onclick="toggleProfileEdit()">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/common.js?v=16"></script>
+<script src="/js/profile.js?v=1"></script>
+<script src="/js/employee.js?v=21"></script>
+</body>
+</html>

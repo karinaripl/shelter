@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <circle cx="100" cy="100" r="100" fill="#F97316"/>
+  <ellipse cx="100" cy="198" rx="62" ry="38" fill="#EA580C"/>
+  <rect x="89" y="148" width="22" height="22" rx="11" fill="#F9C8A0"/>
+  <ellipse cx="100" cy="110" rx="37" ry="42" fill="#F9C8A0"/>
+  <!-- High ponytail -->
+  <ellipse cx="100" cy="76" rx="36" ry="26" fill="#C0392B"/>
+  <!-- Ponytail going up and back -->
+  <ellipse cx="100" cy="54" rx="10" ry="18" fill="#C0392B"/>
+  <path d="M90 60 Q80 30 95 20" stroke="#E05050" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <path d="M110 60 Q120 28 105 18" stroke="#C0392B" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <!-- Sweatband -->
+  <rect x="63" y="88" width="74" height="10" rx="5" fill="white" opacity="0.8"/>
+  <!-- Eyes -->
+  <ellipse cx="86" cy="110" rx="5" ry="5.5" fill="white"/>
+  <circle cx="87" cy="110" r="3" fill="#1A0A00"/>
+  <ellipse cx="114" cy="110" rx="5" ry="5.5" fill="white"/>
+  <circle cx="115" cy="110" r="3" fill="#1A0A00"/>
+  <path d="M81 101 Q87 98 93 101" stroke="#C0392B" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M107 101 Q113 98 119 101" stroke="#C0392B" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M97 122 Q100 126 103 122" stroke="#C09078" stroke-width="1.5" fill="none"/>
+  <path d="M89 134 Q100 143 111 134" stroke="#C04060" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+</svg>
