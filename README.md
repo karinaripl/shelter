@@ -41,6 +41,7 @@ SQL-скрипты в корне проекта:
 createdb catbd
 
 # Выполни SQL-скрипты (в pgAdmin или psql)
+psql -d catbd -f db_create.sql
 psql -d catbd -f db_views_and_triggers.sql
 psql -d catbd -f trigger_cat_event.sql
 psql -d catbd -f donation_relations.sql
