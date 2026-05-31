@@ -32,7 +32,26 @@ namespace shelter2
             builder.Services.AddSwaggerGen();
 
             // ��������� �����������
-            builder.Services.AddControllers();
+            builder.Services.AddControllers(options =>
+            {
+                var p = options.ModelBindingMessageProvider;
+                p.SetValueMustNotBeNullAccessor(
+                    _ => "Поле обязательно для заполнения.");
+                p.SetAttemptedValueIsInvalidAccessor(
+                    (v, _) => $"Значение «{v}» недопустимо.");
+                p.SetNonPropertyAttemptedValueIsInvalidAccessor(
+                    v => $"Значение «{v}» недопустимо.");
+                p.SetUnknownValueIsInvalidAccessor(
+                    _ => "Недопустимое значение.");
+                p.SetNonPropertyUnknownValueIsInvalidAccessor(
+                    () => "Недопустимое значение.");
+                p.SetValueIsInvalidAccessor(
+                    v => $"Значение «{v}» недопустимо.");
+                p.SetMissingBindRequiredValueAccessor(
+                    f => $"Поле «{f}» обязательно.");
+                p.SetMissingKeyOrValueAccessor(
+                    () => "Укажите ключ и значение.");
+            });
 
             // ������������ ������ �����������
             builder.Services.AddScoped<IAuthService, AuthService>();

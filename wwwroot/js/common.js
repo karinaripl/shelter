@@ -77,13 +77,18 @@ async function api(path, method = 'GET', body = null) {
         let msg;
         try {
             const d = await res.json();
-            msg = d.error || d.message ||
-                  (d.title && d.title !== 'One or more validation errors occurred.' ? d.title : null);
+            msg = d.error || d.message;
+            if (!msg && d.errors) {
+                const first = Object.values(d.errors).flat()[0];
+                if (first) msg = first;
+            }
         } catch (_) {}
         if (!msg) {
-            if (res.status === 401) msg = 'Сессия истекла. Войдите заново.';
+            if (res.status === 400) msg = 'Некорректные данные. Проверьте заполненные поля.';
+            else if (res.status === 401) msg = 'Сессия истекла. Войдите заново.';
             else if (res.status === 403) msg = 'Недостаточно прав для этого действия.';
             else if (res.status === 404) msg = 'Запрошенные данные не найдены.';
+            else if (res.status === 409) msg = 'Конфликт данных. Запись уже существует или используется.';
             else msg = 'Ошибка сервера. Попробуйте позже.';
         }
         throw new Error(msg);

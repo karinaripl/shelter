@@ -154,10 +154,30 @@ function populateSelect(id, items, valKey, lblKey) {
 async function api(path, method = 'GET', body = null) {
     const opts = { method, headers: { 'Content-Type': 'application/json' } };
     if (body) opts.body = JSON.stringify(body);
-    const res = await fetch(`${API_BASE}${path}`, opts);
+    let res;
+    try {
+        res = await fetch(`${API_BASE}${path}`, opts);
+    } catch (_) {
+        throw new Error('Нет связи с сервером. Проверьте подключение.');
+    }
     if (!res.ok) {
-        let msg = 'Произошла ошибка, попробуйте снова';
-        try { const d = await res.json(); msg = d.error || d.message || d.title || (typeof d === 'string' ? d : msg); } catch (_) {}
+        let msg;
+        try {
+            const d = await res.json();
+            msg = d.error || d.message;
+            if (!msg && d.errors) {
+                const first = Object.values(d.errors).flat()[0];
+                if (first) msg = first;
+            }
+        } catch (_) {}
+        if (!msg) {
+            if (res.status === 400) msg = 'Некорректные данные. Проверьте заполненные поля.';
+            else if (res.status === 401) msg = 'Сессия истекла. Войдите заново.';
+            else if (res.status === 403) msg = 'Недостаточно прав для этого действия.';
+            else if (res.status === 404) msg = 'Запрошенные данные не найдены.';
+            else if (res.status === 409) msg = 'Конфликт данных. Запись уже существует или используется.';
+            else msg = 'Ошибка сервера. Попробуйте позже.';
+        }
         throw new Error(msg);
     }
     if (res.status === 204) return null;
@@ -401,6 +421,7 @@ async function openAddMedCard() {
     editingMedCardId = null;
     document.getElementById('medCardModalTitle').textContent = 'Создать медкарту';
     document.getElementById('medCardForm').reset();
+    setWeightError(null);
     document.getElementById('medCardCatGroup').style.display = 'block';
     document.getElementById('medCardDateGroup').style.display = 'block';
     document.getElementById('medCardDate').value = today();
@@ -430,6 +451,7 @@ function openEditMedCard(cardId) {
     document.getElementById('medCardModalTitle').textContent = 'Редактировать медкарту';
     document.getElementById('medCardCatGroup').style.display = 'none';
     document.getElementById('medCardDateGroup').style.display = 'none';
+    setWeightError(null);
     const mc = medCards.find(m => m.medical_card_id === cardId);
     if (mc) {
         document.getElementById('medWeight').value = mc.weight || '';
@@ -440,8 +462,28 @@ function openEditMedCard(cardId) {
     openModal('medCardModal');
 }
 
+function setWeightError(msg) {
+    const inp = document.getElementById('medWeight');
+    const err = document.getElementById('medWeightErr');
+    if (msg) {
+        inp.style.borderColor = 'var(--red)';
+        err.textContent = msg;
+        err.style.display = 'block';
+        inp.focus();
+    } else {
+        inp.style.borderColor = '';
+        err.style.display = 'none';
+    }
+}
+
 async function saveMedCard(e) {
     e.preventDefault();
+    const weightVal = document.getElementById('medWeight').value;
+    if (weightVal !== '' && parseFloat(weightVal) <= 0) {
+        setWeightError('Вес должен быть больше 0');
+        return;
+    }
+    setWeightError(null);
     try {
         if (editingMedCardId) {
             const mc = medCards.find(m => m.medical_card_id === editingMedCardId);
@@ -2602,6 +2644,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     document.getElementById('logoutBtn').addEventListener('click', logout);
+    document.getElementById('medWeight').addEventListener('input', () => setWeightError(null));
 
     initTabs();
     initModals();
